@@ -28,7 +28,7 @@ $Angle = 0
 
 $text = "WORK IN PROGRESS"
 
-Write-Host "Starting job 'Create PDF as attachment with a watermark' for file '$($file._Name)' ..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 if( @("idw","dwg") -notcontains $file._Extension ) {
     Write-Host "Files with extension: '$($file._Extension)' are not supported"
@@ -99,4 +99,4 @@ if(-not $exportResult) {
 if(-not $closeResult) {
     throw("Failed to close document $($file.LocalPath)! Reason: $($closeResult.Error.Message))")
 }
-Write-Host "Completed job 'Create PDF with a Watermark on the bottom right corner as attachment'"
+Write-Host "Completed job '$($job.Name)'"

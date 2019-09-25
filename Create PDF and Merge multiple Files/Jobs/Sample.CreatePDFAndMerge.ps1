@@ -1,6 +1,6 @@
 #=============================================================================#
 # PowerShell script sample for coolOrange powerJobs                           #
-# Creates a PDF file of multiple PDF`s										  # 
+# Creates a PDF file of multiple PDF files									  # 
 # and add it to Autodesk Vault as Design Vizualization  					  #
 #                                                                             #
 # Copyright (c) coolOrange s.r.l. - All rights reserved.                      #
@@ -10,15 +10,19 @@
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
 
+if (-not $folder) {
+    $vaultFolder = "$/Designs/Inventor Sample Data/Models/Assemblies/Scissors" 
+} else {
+    $vaultFolder = $folder._FullPath
+}
+
 Add-Type -Path "C:\ProgramData\coolOrange\powerJobs\Modules\PdfSharp.dll"
-$files = Get-VaultFiles -Folder "$/Designs/Inventor Sample Data/Models/Assemblies/Scissors" 
+$files = Get-VaultFiles -Folder $vaultFolder
 $files = $files | Where-Object { $_.'File Extension' -Match "^(idw|dwg)" }
-
 $hideZIP = $false
-$workingDirectory = "C:\Temp\Scissors"
+$workingDirectory = "C:\Temp\Drawings"
 
-Write-Host "Starting job 'Create PDF of multiple files' for files '$($files._Name)' ..."
-
+Write-Host "Starting job '$($job.Name)' ..."
 
 if(!(Test-Path "$workingDirectory\Export")){
     New-Item -Path "$workingDirectory\Export" -ItemType Directory | Out-Null
@@ -72,5 +76,4 @@ if(-not $exportResult) {
 if(-not $closeResult) {
     throw("Failed to close document $($file.LocalPath)! Reason: $($closeResult.Error.Message))")
 }
-
-Write-Host "Completed job 'Create PDF of multiple files'"
+Write-Host "Completed job '$($job.Name)'"

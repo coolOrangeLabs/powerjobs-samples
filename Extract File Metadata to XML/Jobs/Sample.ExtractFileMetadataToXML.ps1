@@ -16,7 +16,7 @@ if (!(Test-Path $workingDirectory)) {
     New-Item -Path $workingDirectory -ItemType Directory
 }
 
-Write-Host "Starting job 'Extract file Metadata as XML in $workingDirectory '..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 if( @("idw","dwg") -notcontains $file._Extension ) {
     Write-Host "Files with extension: '$($file._Extension)' are not supported"
@@ -39,4 +39,4 @@ foreach ($prop in $file.PSObject.Properties) {
 
 $document.Save("$workingDirectory\$($file.Name).xml") | Out-Null
 
-Write-Host "Finished job 'Extract file Metadata as XML in $workingDirectory'"
+Write-Host "Completed job '$($job.Name)'"

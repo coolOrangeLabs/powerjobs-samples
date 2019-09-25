@@ -11,7 +11,7 @@
 
 $workingDirectory = "C:\Temp\Thumbnails"
 
-Write-Host "Starting job 'Create Thumbnail' from file '$($file._Name)' ..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 if(!(Test-Path $workingDirectory)){
 	New-Item -Path $workingDirectory -ItemType Directory | Out-Null
@@ -25,4 +25,4 @@ $ms.Write($imageBytes, 0, $imageBytes.Length);
 $image = [System.Drawing.Image]::FromStream($ms, $true)
 $image.Save("$workingDirectory\$($file._Name).png")
 
-Write-Host "Completed job 'Create Thumbnail'"
+Write-Host "Completed job '$($job.Name)'"

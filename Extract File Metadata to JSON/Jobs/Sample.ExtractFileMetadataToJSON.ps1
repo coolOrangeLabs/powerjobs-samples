@@ -15,7 +15,7 @@ if(!(Test-Path "$workingDirectory")){
 	New-Item -Path "$workingDirectory" -ItemType Directory | Out-Null
 }
 
-Write-Host "Starting job 'Create JSON as attachment' for file '$($file._Name)' nd upload it to 'C:\temp' ..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 $properties = @()
 foreach ($prop in $file.PSObject.Properties){
@@ -33,4 +33,4 @@ if(!($JSONfile)) {
 	Set-Content -Path "$workingDirectory\$($file._Name).json" -Value $properties
 }
 
-Write-Host "Completed job 'Create PDF as attachment' for file '$($file._Name)' and successfully uploaded it to C:\temp"
+Write-Host "Completed job '$($job.Name)'"

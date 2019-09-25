@@ -15,7 +15,8 @@ $localPNGfileLocation = "$workingDirectory\$($Title).dxf"
 $vaultPNGfileLocation = $file._EntityPath +"/"+ (split-path -Leaf $localPNGfileLocation)
 $fastOpen = $file._Extension  -eq "dwg" -and $file._ReleasedRevision
 
-Write-Host "Starting job 'Create DXF as attachment' for file '$($file._Name)' ..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
+
 if( @("dwg") -notcontains $file._Extension ) {
     Write-Host "Files with extension: '$($file._Extension)' are not supported"
     return
@@ -35,5 +36,5 @@ $accoreconsolepath = Resolve-Path -Path "C:\Program Files\Autodesk\*\accoreconso
 $DWGfile = Add-VaultFile -From $localPNGfileLocation -To $vaultPNGfileLocation -FileClassification DesignVisualization -Hidden $false
 $file = Update-VaultFile -File $file._FullPath -AddAttachments @($DWGfile._FullPath)
 
-Write-Host "Completed job 'Create DXF as attachment'"
 Clean-Up -folder $workingDirectory
+Write-Host "Completed job '$($job.Name)'"

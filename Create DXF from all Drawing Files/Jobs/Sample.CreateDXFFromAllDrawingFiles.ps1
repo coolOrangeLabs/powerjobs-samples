@@ -10,27 +10,27 @@
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
 
-$files = Get-VaultFiles -Properties  @{"File Extension"="dwg"} 
-$files += Get-VaultFiles -Properties    @{"File Extension"="idw"} 
-$files = $files | Where-Object { $_.'File Extension' -Match "^(idw|dwg)" } #| Select-Object -First 10
- 
+$vaultfolder = "$/Designs/DXF"
 $workingDirectory = "C:\Temp\DXF"
  
 if(!(Test-Path "$workingDirectory")){
     New-Item -Path "$workingDirectory" -ItemType Directory
 }
- 
-$vaultfolder = "$/Designs"
-Write-Host "Starting job 'Create DXF of all Inventor files'$($files._Name)'  ..."
+
+Write-Host "Starting job '$($job.Name)' ..."
  
 $accoreconsolepath = Resolve-Path -Path "C:\Program Files\Autodesk\*\accoreconsole.exe"
- 
+
+$files = Get-VaultFiles -Properties  @{"File Extension"="dwg"} 
+$files += Get-VaultFiles -Properties    @{"File Extension"="idw"} 
+$files = $files | Where-Object { $_.'File Extension' -Match "^(idw|dwg)" } #| Select-Object -First 10
+
 foreach ($file in $files) {
     $fastOpen = $file._Extension -eq "dwg" -or $file._Extension -eq "idw"-and $file._ReleasedRevision
     Save-VaultFile -File $file._FullPath -DownloadDirectory $workingDirectory -ExcludeChildren:$fastOpen -ExcludeLibraryContents:$fastOpen | Out-Null
     $Title = [System.IO.Path]::GetFileNameWithoutExtension($file._FullPath)
     $localInventorFileLocation = "$workingDirectory\$Title.dxf"
-    $vaultDWGFileLocation = $vaultfolder+"/DXF/"+ (split-path -Leaf "$Title.dxf")
+    $vaultDWGFileLocation = $vaultfolder + (split-path -Leaf "$Title.dxf")
 
     if($file._Extension -contains "idw"){
         $openResult = Open-Document -LocalFile "$workingDirectory\$($file._Name)" -Options @{ FastOpen = $fastOpen }
@@ -68,6 +68,6 @@ foreach ($file in $files) {
     Add-VaultFile -From $localInventorFileLocation -To $vaultDWGFileLocation -FileClassification DesignVisualization -Hidden $false | Out-Null
     Write-Host "Processing file '$($file._Name)'..."
 }
- 
-Write-Host "Completed job 'Create DXF for all Inventor files'"
+
 Clean-Up -folder $workingDirectory
+Write-Host "Completed job '$($job.Name)'"

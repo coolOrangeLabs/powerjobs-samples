@@ -9,15 +9,16 @@
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 # ============================================================================#
 
-$excel = New-Object -ComObject excel.application 
-$excel.visible = $false
 $workingDirectory = "C:\Temp\$($file._Name).xlsx"
 
 if (!(Test-Path $workingDirectory)) {
     New-Item -Path $workingDirectory -ItemType Directory
 }
 
-Write-Host "Starting job 'Create Excel spreadsheet 'for file $($file._Name) ..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
+
+$excel = New-Object -ComObject excel.application 
+$excel.visible = $false
 $workbook = $excel.Workbooks.Add(1)
 $worksheet = $workbook.Worksheets.Item(1)
 
@@ -43,4 +44,4 @@ foreach ($prop in $file.PSObject.Properties) {
 $workbook.SaveAs("$workingDirectory\$($file._Name).xlsx")
 $workbook.Close()
 
-Write-Host "Completed job 'Create Excel spreadsheet' for file $($file._Name)"
+Write-Host "Completed job '$($job.Name)'"

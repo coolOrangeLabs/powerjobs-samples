@@ -9,8 +9,8 @@
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
 
-Write-Host "Started job 'Synchronise file properties' for file $($file._Name)"
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 SyncProperties -file $file
 
-Write-Host "Completed job 'Synchronise file properties'"
+Write-Host "Completed job '$($job.Name)'"

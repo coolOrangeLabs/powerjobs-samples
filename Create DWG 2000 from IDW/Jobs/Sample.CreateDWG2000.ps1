@@ -16,7 +16,7 @@ $localDWGfileLocation = "$workingDirectory\$($file._Name).dwg"
 $vaultDWGfileLocation = $file._EntityPath +"/"+ (split-path -Leaf $localDWGfileLocation)
 $fastOpen = $file._Extension -eq "idw" -and $file._ReleasedRevision
 
-Write-Host "Starting job 'Create DWG2000 as attachment' for file '$($file._Name)' ..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 if( @("idw","dwg","iam","ipt") -notcontains $file._Extension ) {
     Write-Host "Files with extension: '$($file._Extension)' are not supported"
@@ -69,4 +69,4 @@ if(-not $exportResult) {
 if(-not $closeResult) {
     throw("Failed to close document $($file.LocalPath)! Reason: $($closeResult.Error.Message))")
 }
-Write-Host "Completed job 'Create DWG2000 as attachment'"
+Write-Host "Completed job '$($job.Name)'"

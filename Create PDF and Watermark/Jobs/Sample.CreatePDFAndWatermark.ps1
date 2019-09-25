@@ -29,7 +29,7 @@ $Angle = 315
 
 $text = "WORK IN PROGRESS"
 
-Write-Host "Starting job 'Create PDF with a watermark as attachment' for file '$($file._Name)' ..."
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 if( @("idw","dwg") -notcontains $file._Extension ) {
     Write-Host "Files with extension: '$($file._Extension)' are not supported"
@@ -65,7 +65,6 @@ foreach($i in $SizeMapping.Keys) {
         $FontSize = $SizeMapping[$i]
     }
 }
-
 
 if($openResult) {
     if($openResult.Application.Name -like 'Inventor*') {
@@ -103,4 +102,4 @@ if(-not $exportResult) {
 if(-not $closeResult) {
     throw("Failed to close document $($file.LocalPath)! Reason: $($closeResult.Error.Message))")
 }
-Write-Host "Completed job 'Create PDF with a Watermark across the file as attachment'"
+Write-Host "Completed job '$($job.Name)'"

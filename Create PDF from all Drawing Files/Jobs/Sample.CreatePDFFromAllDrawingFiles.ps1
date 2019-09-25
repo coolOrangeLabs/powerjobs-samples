@@ -9,16 +9,18 @@
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
 
-$files = Get-VaultFiles -Folder "$/Designs/Inventor Sample Data/Models/Assemblies/Scissors" 
-$files = $files | Where-Object { $_.'File Extension' -Match "^(idw|dwg)" }
-
 $workingDirectory = "C:\Temp\PDF of an Item"
 
-Write-Host "Starting job 'Create PDF of multiple files' for files '$($files._Name)' ..."
+Write-Host "Starting job '$($job.Name)' ..."
 
 if(!(Test-Path "$workingDirectory\Export")){
 	New-Item -Path "$workingDirectory\Export" -ItemType Directory | Out-Null
 }
+
+$files = Get-VaultFiles -Properties  @{"File Extension"="dwg"} 
+$files += Get-VaultFiles -Properties    @{"File Extension"="idw"} 
+$files = $files | Where-Object { $_.'File Extension' -Match "^(idw|dwg)" } #| Select-Object -First 10
+
 foreach ($file in $files){
 	$fastOpen = $file._Extension -eq "idw" -or $file._Extension -eq "dwg" -and $files._ReleasedRevision
 
@@ -54,6 +56,5 @@ if(-not $exportResult) {
 if(-not $closeResult) {
 	throw("Failed to close document $($file.LocalPath)! Reason: $($closeResult.Error.Message))")
 }
-
-Write-Host "Completed job 'Create PDF for multiple files'"
+Write-Host "Completed job '$($job.Name)'"
 

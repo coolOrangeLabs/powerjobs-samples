@@ -1,6 +1,6 @@
 #=============================================================================#
 # PowerShell script sample for coolOrange powerJobs                           #
-# Creates multiple PDF files and ZIP´s them                                   #
+# Creates multiple PDF files and compresses the files to a ZIP archive        #
 #                                                                             #
 # Copyright (c) coolOrange s.r.l. - All rights reserved.                      #
 #                                                                             #
@@ -9,12 +9,18 @@
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
 
+if (-not $folder) {
+    $vaultFolder = "$/Designs/Inventor Sample Data/Models/Assemblies/Scissors" 
+} else {
+    $vaultFolder = $folder._FullPath
+}
 
-$files = Get-VaultFiles -Folder "$/TestFolder" 
+$files = Get-VaultFiles -Folder $vaultFolder 
 $files = $files | Where-Object { $_.'File Extension' -Match "^(idw|dwg)" }
 $hideZIP = $false
-$workingDirectory = "C:\Temp\VaultConnector\Multiple PDF´s and ZIP"
-Write-Host "Starting job 'Create ZIP for multiple files PDF' for file '$($files._Name)' ..."
+$workingDirectory = "C:\Temp\$([Guid]::NewGuid())"
+
+Write-Host "Starting job '$($job.Name)' ..."
 
 if(!(Test-Path "$workingDirectory\Export")){
     New-Item -Path "$workingDirectory\Export" -ItemType Directory | Out-Null
@@ -22,11 +28,8 @@ if(!(Test-Path "$workingDirectory\Export")){
 
 foreach ($file in $files){
     $fastOpen = $file._Extension -eq "idw" -or $file._Extension -eq "dwg" -and $files._ReleasedRevision
-
     $downloadedFiles = Save-VaultFile -File $file._FullPath -DownloadDirectory "$workingDirectory\Import" -ExcludeChildren:$fastOpen -ExcludeLibraryContents:$fastOpen
-
     $file = $downloadedFiles | Select-Object -First 1
-    
     $localPDFfileLocation = "$workingDirectory\Export\$($file._Name).pdf"
     
     $openResult = Open-Document -LocalFile $file.LocalPath -Options @{ FastOpen = $fastOpen } 
@@ -40,13 +43,11 @@ foreach ($file in $files){
     
         $closeResult = Close-Document
     }
-
 }
 $ZIPfile = "$workingDirectory\$([Guid]::NewGuid()).zip"
-    
 Compress-Archive -Path "$workingDirectory\Export" -DestinationPath $ZIPfile  -Force
+
 Add-VaultFile -From $ZIPfile -To $($files[0]._EntityPath + "/" + (Split-Path -Leaf $ZIPfile)) -FileClassification DesignVisualization -Hidden $hideZIP
-    
     
 Clean-Up -folder $workingDirectory
 
@@ -59,5 +60,4 @@ if(-not $exportResult) {
 if(-not $closeResult) {
     throw("Failed to close document $($file.LocalPath)! Reason: $($closeResult.Error.Message))")
 }
-    
-Write-Host "Completed job 'Create ZIP for multiples files PDF'"
+Write-Host "Completed job '$($job.Name)'"
