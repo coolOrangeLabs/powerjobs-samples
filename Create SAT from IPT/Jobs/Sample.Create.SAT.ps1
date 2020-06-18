@@ -30,9 +30,14 @@ if ($openResult) {
         $exportResult = $true
     }
     else {
-        $openResult.Document.Instance.ComponentDefiniton.Unfold
-         
         try {
+            $componentDefinition = $openResult.Document.Instance.ComponentDefiniton
+            if (-not $componentDefinition.HasFlatPattern)
+            {
+                $componentDefinition.Unfold()
+                $componentDefinition.FlatPattern.ExitEdit()
+            }
+
             $InvApp = $openResult.Application.Instance
             $SATAddin = $InvApp.ApplicationAddIns | Where-Object { $_.ClassIdString -eq "{89162634-02B6-11D5-8E80-0010B541CD80}" }
             $SourceObject = $InvApp.ActiveDocument
