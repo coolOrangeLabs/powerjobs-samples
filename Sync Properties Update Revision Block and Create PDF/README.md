@@ -1,7 +1,7 @@
-# Sync Properites, Update Revision Block and Create PDF
+# Sync Properties, Update Revision Block and Create PDF
 
 ## Job Description
-Synchronizes proeprties, Updates Revision Block and Creates a PDF file from a drawing.
+With the sample Create PDF job, a PDF is created sometimes with outdated properties or revision block. This job will first synchronize properties and updates Revision Block and then finally Creates a PDF file from a drawing, thus ensuring up to date PDF generated from the drawing.
 
 **Note** Update revision block job is added 'sometimes' after the sync job finishes. This can be switched off by removing the last two settings under the section `<syncPropertiesPostJobExtensions>` inside the JobProcessor.exe.config file.
 
