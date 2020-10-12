@@ -2,7 +2,7 @@
 # EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES #
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
-#using Vault API to get the file instead of using powerVault's $file since it runs into property sync job not finding any equivalence problems when '$file.Name' is used
+#using Vault API to get the file instead of using powerVault's $file since it runs into property sync job not finding any equivalence problems when '$file.Name' or '$file._Name' is used
 $fileForSyncJob = $vault.DocumentService.GetFileById($file.Id)
 
 Write-Host "Starting job 'Sync Properties, Update Revision Block and create pdf' for file '$($fileForSyncJob.Name)' ..."
