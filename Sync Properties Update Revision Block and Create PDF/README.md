@@ -7,7 +7,7 @@ This job will first synchronize properties and updates Revision Block and then f
 
 **Known issues** 
 -  Update revision job (separate from the one in this job) runs into error. The reason is because an additional Update revision block job is added 'sometimes' after the sync job finishes which probably finds that the file or CAD application is not currently used by the current executing job.
--  When accessing powerVault's $file's 'Name' or '_Name' property, the sync properties runs into false positive result that it doesn't find any equivalence error on the file. The only workaround currently is not to use the above mentioned properties before or within the sync properties job.
+-  When accessing powerVault's $file's 'Name' or '_Name' property, the sync properties runs into false positive result that it doesn't find any equivalence error on the file. The only workaround currently is not to use the above mentioned properties before or within the sync properties job. This job already makes use of this workaround.
 
 
 ## Installation
