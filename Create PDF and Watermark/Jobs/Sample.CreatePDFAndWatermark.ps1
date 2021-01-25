@@ -27,8 +27,6 @@ $OffsetX = -2
 $OffsetY = 15
 $Angle = 315
 
-$text = "WORK IN PROGRESS"
-
 Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
 if( @("idw","dwg") -notcontains $file._Extension ) {
@@ -39,32 +37,6 @@ if( @("idw","dwg") -notcontains $file._Extension ) {
 $downloadedFiles = Save-VaultFile -File $file._FullPath -DownloadDirectory $workingDirectory -ExcludeChildren:$fastOpen -ExcludeLibraryContents:$fastOpen
 $file = $downloadedFiles | Select-Object -First 1
 $openResult = Open-Document -LocalFile $file.LocalPath -Options @{ FastOpen = $fastOpen } 
-$SizeMapping = @{
-    "9986" = 50.0 #Custom Format
-    "9987" = 30.0 #Format A
-    "9988" = 40.0 #Format B
-    "9989" = 50.0 #Format C
-    "9990" = 60.0 #Format D
-    "9991" = 70.0 #Format E
-    "9992" = 80.0 #Format F
-    "9993" = 80.0 #Format A0
-    "9994" = 70.0 #Format A1
-    "9995" = 60.0 #Format A2
-    "9996" = 50.0 #Format A3
-    "9997" = 40.0 #Format A4
-    "9998" = 30.0 #Format 9 in x 12 in
-    "9999" = 40.0 #Format 12 in x 18
-    "10000" = 50.0 #Format 18 in x 24
-    "10001" = 60.0 #Format 24 in x 36
-    "10002" = 70.0 #Format 36 in x 48
-    "10003" = 65.0 #Format 30 in x 42
-}
-
-foreach($i in $SizeMapping.Keys) {
-    if($i -eq $size){
-        $FontSize = $SizeMapping[$i]
-    }
-}
 
 if($openResult) {
     if($openResult.Application.Name -like 'Inventor*') {
@@ -76,6 +48,7 @@ if($openResult) {
 
     try
     {
+        $text = $file._State
         Add-WaterMark -Path $localPDFfileLocation -WaterMark $text -FontSize $FontSize -Angle $Angle -HorizontalAlignment $HorizontalAlignment -VerticalAlignment $VerticalAlignment -Color $Color -Opacity $Opacity -OffSetX $OffsetX -OffSetY $OffsetY
     }
         catch [System.Exception]

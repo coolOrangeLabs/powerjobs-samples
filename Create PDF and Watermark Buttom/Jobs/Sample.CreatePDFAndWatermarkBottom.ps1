@@ -26,11 +26,9 @@ $OffsetX = -2
 $OffsetY = 0
 $Angle = 0
 
-$text = "WORK IN PROGRESS"
-
 Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
-if( @("idw","dwg") -notcontains $file._Extension ) {
+if( @("idw") -notcontains $file._Extension ) {
     Write-Host "Files with extension: '$($file._Extension)' are not supported"
     return
 }
@@ -76,6 +74,7 @@ if($openResult) {
     $exportResult = Export-Document -Format 'PDF' -To $localPDFfileLocation -Options $configFile
 
     try {
+        $text = $file._State
         Add-WaterMark -Path $localPDFfileLocation -WaterMark $text -Angle $Angle -HorizontalAlignment $HorizontalAlignment -VerticalAlignment $VerticalAlignment -Color $Color -Opacity $Opacity -FontSize $FontSize -OffSetX $OffsetX -OffSetY $OffsetY
     } catch [System.Exception] {
         throw($error[0])
