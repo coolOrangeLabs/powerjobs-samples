@@ -23,6 +23,5 @@ The usage of these samples is at your own risk. There is no free support related
 
 ## Author
 coolOrange s.r.l.  
-Channel Readiness Team
 
-![coolOrange](https://user-images.githubusercontent.com/36075173/46519882-4b518880-c87a-11e8-8dab-dffe826a9630.png)
+![coolOrange](https://user-images.githubusercontent.com/5640189/107936953-8eac7d80-6f83-11eb-90f4-7398eaf0220f.png)
