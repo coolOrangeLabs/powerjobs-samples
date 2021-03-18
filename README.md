@@ -18,6 +18,20 @@ Sample jobs for coolOrange powerJobs
 
 This repository contains various jobs that demonstrate the power and flexibility of *coolOrange powerJobs*. As a certified partner, you can use the jobs as samples or templates to speed up your project development/customization and to deliver high quality and flexible jobs to your customer with less effort and less time.
 
+## Debugging
+
+In order to obtain a file from Vault and with that running the script in a code editor such as 'Windows PowerShell ISE' or 'Visual Studio Code' instead of powerJobs, the following code can be added to the ps1 scripts.
+
+```powershell
+if (-not $IAmRunningInJobProcessor) {
+    Import-Module powerJobs
+    Open-VaultConnection -Server "localhost" -Vault "Vault" -User "Administrator" -Password ""
+    $file = Get-VaultFile -Properties @{Name="Scissors.idw"}
+}
+```
+
+This additional code logs in to Vault and uses the file 'Scissors.idw' if the script gets exectued by anthing other than powerJobs.
+
 ## At your own risk
 The usage of these samples is at your own risk. There is no free support related to the samples. However, if you have questions to powerJobs, then visit http://www.coolorange.com/wiki or start a conversation in our support forum at http://support.coolorange.com/support/discussions
 
