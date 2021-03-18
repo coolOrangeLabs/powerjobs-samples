@@ -11,7 +11,7 @@
 #=============================================================================#
 
 #Please install the Add-Watermark cmdlet before using this script!!!
-#https://support.coolorange.com/a/solutions/articles/22000216500
+#https://support.coolorange.com/support/solutions/articles/22000216500
 
 $hidePDF = $false
 $workingDirectory = "C:\Temp\$($file._Name)"
