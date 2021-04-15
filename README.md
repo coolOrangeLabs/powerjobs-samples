@@ -30,7 +30,7 @@ if (-not $IAmRunningInJobProcessor) {
 }
 ```
 
-This additional code logs in to Vault and uses the file 'Scissors.idw' if the script gets exectued by anthing other than powerJobs.
+This additional code logs in to Vault and uses the file 'Scissors.idw' if the script gets executed by anything other than powerJobs.
 
 ## At your own risk
 The usage of these samples is at your own risk. There is no free support related to the samples. However, if you have questions to powerJobs, then visit http://www.coolorange.com/wiki or start a conversation in our support forum at http://support.coolorange.com/support/discussions
