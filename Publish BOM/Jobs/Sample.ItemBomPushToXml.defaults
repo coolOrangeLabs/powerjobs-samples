@@ -1,0 +1,10 @@
+{
+  "Priority": 101,
+  "Description": "Publish item BOM to XML",
+  "LifecycleStateChangeTriggers": [],
+  "Filter": [],
+  "ContextMenuTrigger": {
+    "IsEnabled": true,
+    "Label": "Publish BOM"
+  }
+}

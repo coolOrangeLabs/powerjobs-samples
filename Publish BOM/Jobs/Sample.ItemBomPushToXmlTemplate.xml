@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Root>
+    <BOMHeader>
+        <Property PropertyNameVault="_Number" PropertyNameERP="">Value</Property>
+        <Property PropertyNameVault="_Description(Item,CO)" PropertyNameERP="">Value</Property>
+        <Property PropertyNameVault="_Revision" PropertyNameERP="">Value</Property>
+        <Property PropertyNameVault="_Units" PropertyNameERP="">Value</Property>
+        <BOMRows>
+            <BOMRow Quantity="Bom_Quantity" Position="Bom_Position">
+                <Property PropertyNameVault="_Number" PropertyNameERP="">Value</Property>
+                <Property PropertyNameVault="_Description(Item,CO)" PropertyNameERP="">Value</Property>
+                <Property PropertyNameVault="_Revision" PropertyNameERP="">Value</Property>
+                <Property PropertyNameVault="Bom_Unit" PropertyNameERP="">Value</Property>
+            </BOMRow>
+        </BOMRows>
+    </BOMHeader>
+    <ConversionMapping>
+        <_Units>
+            <ValueMapping Vault="Each" ERP="PCS" />
+            <ValueMapping Vault="Liter" ERP="L" />
+            <ValueMapping Vault="Meter" ERP="M" />
+            <ValueMapping Vault="Kilogram" ERP="KG" />
+        </_Units>
+        <Bom_Unit>
+            <ValueMapping Vault="Each" ERP="PCS" />
+            <ValueMapping Vault="Liter" ERP="L" />
+            <ValueMapping Vault="Meter" ERP="M" />
+            <ValueMapping Vault="Kilogram" ERP="KG" />
+        </Bom_Unit>
+    </ConversionMapping>
+</Root>
