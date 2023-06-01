@@ -9,6 +9,36 @@
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
 
+# Required in the powerJobs Settings Dialog to determine the entity type for lifecycle state change triggers
+# JobEntityType = FILE
+
+#region Settings
+# To include the Revision of the main file in the PDF name set Yes, otherwise No
+$stlFileNameWithRevision = $false
+
+# The character used to separate file name and Revision label in the PDF name such as hyphen (-) or underscore (_)
+$stlFileNameRevisionSeparator = "_"
+
+# To include the file extension of the main file in the PDF name set Yes, otherwise No
+$stlFileNameWithExtension = $true
+
+# To add the PDF to Vault set Yes, to keep it out set No
+$addSTLToVault = $true
+
+# To attach the PDF to the main file set Yes, otherwise No
+$attachSTLToVaultFile = $true
+
+# Specify a Vault folder in which the PDF should be stored (e.g. $/Designs/PDF), or leave the setting empty to store the PDF next to the main file
+$STLVaultFolder = ""
+
+# Specify a network share into which the PDF should be copied (e.g. \\SERVERNAME\Share\Public\PDFs\)
+$stlNetworkFolder = ""
+
+# To enable faster opening of released Inventor drawings without downloading and opening their model files set Yes, otherwise No
+$openReleasedDrawingsFast = $true
+#endregion
+
+
 $workingDirectory = "C:\Temp\$($file._Name)"
 $localSTLfileLocation = "$workingDirectory\$($file._Name).STL"
 $vaultSTLfileLocation = $file._EntityPath + "/" + (Split-Path -Leaf $localSTLfileLocation)
