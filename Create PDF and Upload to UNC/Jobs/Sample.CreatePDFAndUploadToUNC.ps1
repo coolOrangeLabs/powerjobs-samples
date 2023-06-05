@@ -8,8 +8,47 @@
 # EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES #
 # OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.  #
 #=============================================================================#
+# JobEntityType = FILE
 
-$uncPath = "\\SERVER1\Share\Public\PDFs\"
+#region Settings
+# To include the Revision of the main file in the PDF name set Yes, otherwise No
+$pdfFileNameWithRevision = $true
+
+# The character used to separate file name and Revision label in the PDF name such as hyphen (-) or underscore (_)
+$pdfFileNameRevisionSeparator = "_"
+
+# To include the file extension of the main file in the PDF name set Yes, otherwise No
+$pdfFileNameWithExtension = $true
+
+# To add the PDF to Vault set Yes, to keep it out set No
+$addPDFToVault = $true
+
+# To enter the unc path
+$uncPath = "\\10.0.0.65\Software\test(bitte loeschen)"
+
+# Specify a Vault folder in which the PDF should be stored (e.g. $/Designs/PDF), or leave the setting empty to store the PDF next to the main file
+$pdfVaultFolder = ""
+
+# Specify a network share into which the PDF should be copied (e.g. \\SERVERNAME\Share\Public\PDFs\)
+$pdfNetworkFolder = ""
+
+# To enable faster opening of released Inventor drawings without downloading and opening their model files set Yes, otherwise No
+$openReleasedDrawingsFast = $true
+#endregion
+
+$pdfFileName = [System.IO.Path]::GetFileNameWithoutExtension($file._Name)
+if ($pdfFileNameWithRevision) {
+    $pdfFileName += $pdfFileNameRevisionSeparator + $file._Revision
+}
+if ($pdfFileNameWithExtension) {
+    $pdfFileName += "." + $file._Extension
+}
+$pdfFileName += ".pdf"
+
+if ([string]::IsNullOrWhiteSpace($pdfVaultFolder)) {
+    $pdfVaultFolder = $file._FolderPath
+}
+
 
 $hidePDF = $false
 $workingDirectory = "C:\Temp\$($file._Name)"
