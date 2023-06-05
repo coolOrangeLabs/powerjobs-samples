@@ -21,9 +21,6 @@ $dxfFileNameWithExtension = $true
 # To add the dxf to Vault set Yes, to keep it out set No
 $addDXFToVault = $true
 
-# To attach the dxf to the main file set Yes, otherwise No
-$attachDCFToVaultFile = $true
-
 # Specify a Vault folder in which the dxf should be stored (e.g. $/Designs/PDF), or leave the setting empty to store the PDF next to the main file
 $dxfVaultFolder = ""
 
