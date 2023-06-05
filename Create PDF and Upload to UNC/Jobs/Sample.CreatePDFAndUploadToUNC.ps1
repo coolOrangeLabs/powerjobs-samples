@@ -24,7 +24,7 @@ $pdfFileNameWithExtension = $true
 $addPDFToVault = $true
 
 # To enter the unc path
-$uncPath = "\\10.0.0.65\Software\test(bitte loeschen)"
+$uncPath = ""
 
 # Specify a Vault folder in which the PDF should be stored (e.g. $/Designs/PDF), or leave the setting empty to store the PDF next to the main file
 $pdfVaultFolder = ""
