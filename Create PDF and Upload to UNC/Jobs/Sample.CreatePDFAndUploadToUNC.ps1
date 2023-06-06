@@ -48,20 +48,23 @@ $pdfFileName += ".pdf"
 if ([string]::IsNullOrWhiteSpace($pdfVaultFolder)) {
     $pdfVaultFolder = $file._FolderPath
 }
-
-
-$hidePDF = $false
-$workingDirectory = "C:\Temp\$($file._Name)"
-$localPDFfileLocation = "$workingDirectory\$($file._Name).pdf"
-$vaultPDFfileLocation = $file._EntityPath +"/"+ (Split-Path -Leaf $localPDFfileLocation)
-$fastOpen = $file._Extension -eq "idw" -or $file._Extension -eq "dwg" -and $file._ReleasedRevision
-
-Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
-
-if( @("idw","dwg") -notcontains $file._Extension ) {
+if ( @("idw", "dwg") -notcontains $file._Extension ) {
     Write-Host "Files with extension: '$($file._Extension)' are not supported"
     return
 }
+if (-not $addPDFToVault -and -not $pdfNetworkFolder) {
+    throw("No output for the PDF is defined in ps1 file!")
+}
+if ($pdfNetworkFolder -and -not (Test-Path $pdfNetworkFolder)) {
+    throw("The network folder '$pdfNetworkFolder' does not exist! Correct pdfNetworkFolder in ps1 file!")
+}
+
+$localPDFfileLocation = "$workingDirectory\$($file._Name).pdf"
+$vaultPDFfileLocation = $file._EntityPath +"/"+ (Split-Path -Leaf $localPDFfileLocation)
+$fastOpen = $openReleasedDrawingsFast -and $file._ReleasedRevision
+Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
+
+
 
 $downloadedFiles = Save-VaultFile -File $file._FullPath -DownloadDirectory $workingDirectory -ExcludeChildren:$fastOpen -ExcludeLibraryContents:$fastOpen
 $file = $downloadedFiles | Select-Object -First 1
@@ -76,7 +79,7 @@ if($openResult) {
     $exportResult = Export-Document -Format 'PDF' -To $localPDFfileLocation -Options $configFile 
 
     if($exportResult) {
-        $PDFfile = Add-VaultFile -From $localPDFfileLocation -To $vaultPDFfileLocation -FileClassification DesignVisualization -Hidden $hidePDF
+        $PDFfile = Add-VaultFile -From $localPDFfileLocation -To $vaultPDFfileLocation -FileClassification DesignVisualization 
         $file = Update-VaultFile -File $file._FullPath -AddAttachments @($PDFfile._FullPath)
     }
 
