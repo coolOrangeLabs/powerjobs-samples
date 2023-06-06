@@ -13,18 +13,78 @@
 #Please install the Add-Watermark cmdlet before using this script!!!
 #https://support.coolorange.com/support/solutions/articles/22000216500
 
-$hidePDF = $false
-$workingDirectory = "C:\Temp\$($file._Name)"
+# JobEntityType = FILE
+
+#region Settings
+# To include the Revision of the main file in the PDF name set Yes, otherwise No
+$pdfFileNameWithRevision = $true
+
+# The character used to separate file name and Revision label in the PDF name such as hyphen (-) or underscore (_)
+$pdfFileNameRevisionSeparator = "_"
+
+# To include the file extension of the main file in the PDF name set Yes, otherwise No
+$pdfFileNameWithExtension = $true
+
+# To add the PDF to Vault set Yes, to keep it out set No
+$addPDFToVault = $true
+
+# Specify a Vault folder in which the PDF should be stored (e.g. $/Designs/PDF), or leave the setting empty to store the PDF next to the main file
+$pdfVaultFolder = ""
+
+# Specify a network share into which the PDF should be copied (e.g. \\SERVERNAME\Share\Public\PDFs\)
+$pdfNetworkFolder = ""
+
+# To enable faster opening of released Inventor drawings without downloading and opening their model files set Yes, otherwise No
+$openReleasedDrawingsFast = $true
+# To choose the color 
+$Color = "Orange"
+# To change the font size
+$FontSize = 100
+# To change the position horizontal
+$HorizontalAlignment = "Buttom"
+# To change the position vertical
+$VerticalAlignment = "Right" 
+# To change the Opacity
+$Opacity = 100
+# To change the offset X
+$OffsetX = -2
+# To change the offset Y
+$OffsetY = 15
+# To change the angle
+$Angle = 315
+#endregion
+
+$pdfFileName = [System.IO.Path]::GetFileNameWithoutExtension($file._Name)
+if ($pdfFileNameWithRevision) {
+    $pdfFileName += $pdfFileNameRevisionSeparator + $file._Revision
+}
+if ($pdfFileNameWithExtension) {
+    $pdfFileName += "." + $file._Extension
+}
+$pdfFileName += ".pdf"
+
+if ([string]::IsNullOrWhiteSpace($pdfVaultFolder)) {
+    $pdfVaultFolder = $file._FolderPath
+}
+Write-Host "Starting job 'Create PDF as visualization attachment' for file '$($file._Name)' ..."
+
+if ( @("idw", "dwg") -notcontains $file._Extension ) {
+    Write-Host "Files with extension: '$($file._Extension)' are not supported"
+    return
+}
+if (-not $addPDFToVault -and -not $pdfNetworkFolder) {
+    throw("No output for the PDF is defined in ps1 file!")
+}
+if ($pdfNetworkFolder -and -not (Test-Path $pdfNetworkFolder)) {
+    throw("The network folder '$pdfNetworkFolder' does not exist! Correct pdfNetworkFolder in ps1 file!")
+}
+$fastOpen = $openReleasedDrawingsFast -and $file._ReleasedRevision
+
+
+
 $localPDFfileLocation = "$workingDirectory\$($file._Name).pdf"
 $vaultPDFfileLocation = $file._EntityPath +"/"+ (Split-Path -Leaf $localPDFfileLocation)
-$fastOpen = $file._Extension -eq "idw" -or $file._Extension -eq "dwg" -and $file._ReleasedRevision
-$Color = "Orange"
-$HorizontalAlignment = "Right" 
-$VerticalAlignment = "Bottom" 
-$Opacity = 50
-$OffsetX = -2
-$OffsetY = 0
-$Angle = 0
+
 
 Write-Host "Starting job '$($job.Name)' for file '$($file._Name)' ..."
 
@@ -81,7 +141,7 @@ if($openResult) {
     }
 
     if($exportResult) {
-        $PDFfile = Add-VaultFile -From $localPDFfileLocation -To $vaultPDFfileLocation -FileClassification DesignVisualization -Hidden $hidePDF
+        $PDFfile = Add-VaultFile -From $localPDFfileLocation -To $vaultPDFfileLocation -FileClassification DesignVisualization 
         $file = Update-VaultFile -File $file._FullPath -AddAttachments @($PDFfile._FullPath)
     }
     $closeResult = Close-Document
