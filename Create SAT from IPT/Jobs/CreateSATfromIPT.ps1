@@ -24,9 +24,6 @@ $satFileNameWithExtension = $true
 # To add the SAT to Vault set Yes, to keep it out set No
 $addSATToVault = $true
 
-# To attach the SAT to the main file set Yes, otherwise No
-$attachSATToVaultFile = $true
-
 # Specify a Vault folder in which the SAT should be stored (e.g. $/Designs/PDF), or leave the setting empty to store the PDF next to the main file
 $satVaultFolder = ""
 
@@ -63,7 +60,7 @@ if ( @("ipt") -notcontains $file._Extension ) {
 if (-not $addSATToVault -and -not $satNetworkFolder) {
     throw("No output for the SAT is defined in ps1 file!")
 }
-if ($satNetworkFolder -and -not (Test-Path $pdfNetworkFolder)) {
+if ($satNetworkFolder -and -not (Test-Path $satNetworkFolder)) {
     throw("The network folder '$satNetworkFolder' does not exist! Correct satNetworkFolder in ps1 file!")
 }
 #
