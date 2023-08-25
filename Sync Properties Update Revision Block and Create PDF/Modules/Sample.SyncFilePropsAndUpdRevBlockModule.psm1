@@ -823,9 +823,8 @@ function SyncProperties
 function UpdateRevisionBlock {
 	param ($file)
 
-	#using Vault API to get the file instead of using powerVault's $file since it runs into property sync job not finding any equivalence problems when '$file.Name' or '$file._Name' is used
-	#$fileForUpdRevJob = $vault.DocumentService.GetLatestFileByMasterId($file.MasterId)
-	$fileForUpdRevJob = $file
+	# UpdateRevisionBlock needs the latest version of the file
+	$fileForUpdRevJob = $vault.DocumentService.GetLatestFileByMasterId($file.MasterId)
 
 	Write-Host "Start 'Update Revision Block' of file '$($fileForUpdRevJob.Name)' ..."
 
@@ -845,10 +844,12 @@ function UpdateRevisionBlock {
 	}
 	Write-Host "End 'Update Revision Block' of file '$($fileForUpdRevJob.Name)'"
 
-	# $versionIds = @($file.Id)
+
+# Error using this code block: Exception calling "GetFileVersionsByIDs" with "2" argument(s): "1013"
+
+	# $versionIds = @($fileForUpdRevJob.Id)
 	# $fileVersions = [Connectivity.Services.Document.DocServices]::Instance.GetFileVersionsByIDs($vaultConnection, $versionIds)
 	# $multiSideProvider = new-object Connectivity.Explorer.JobHandlerUpdateRevisionBlock.URBJobHandlerMultiSiteSyncProvider -ArgumentList $true
-
 	# $updateRevisionBlock = new-object Connectivity.Explorer.Document.ViewModel.UpdateRevisionBlock -ArgumentList $fileVersions, $false
 	# $updateRevisionBlock.MultiSiteSyncProvider = $multiSideProvider
 	# $updateRevisionBlock.CheckInComment = "Revision table updated by coolOrange UpdateRevisionTable"
