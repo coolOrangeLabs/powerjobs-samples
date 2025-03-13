@@ -6,7 +6,7 @@ Sample.CreatePDFAndWatermarkBottom: Creates a PDF file from a drawing and adds a
 
 ## Installation
 Download all files (Jobs and Modules) from the current subdirectory of this repository to your powerJobs directory: *C:\ProgramData\coolOrange\powerJobs*
-In addition, the Add-Watermark cmdlet needs to be installed: [Link](https://support.coolorange.com/kb/the-first-step-is-to-create-a-template-the-format-of-the-template-is-quite-flexible.-in-this-example-the-following-html-template-is-used-html-table-bor-1639496571474)
+Due to an issue with .NET Standard libraries it is necessary to preload the dlls. The sample scripts show how to do it.
 
 ## At your own risk
 The usage of these samples is at your own risk. There is no free support related to the samples. However, if you have questions to powerJobs, then visit http://www.coolorange.com/wiki or start a conversation in our support forum at http://support.coolorange.com/support/discussions
